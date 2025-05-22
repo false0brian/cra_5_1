@@ -6,6 +6,7 @@
 #include <algorithm>
 #include "gmock/gmock.h"
 
+
 using namespace std;
 
 struct  Keyword {
@@ -21,7 +22,7 @@ vector<Keyword> topPerDay[7]; //월 ~ 일
 vector<Keyword> topPerGroup[2]; //평일, 주말
 int UZ = 9;
 
-int getWeekIndex(const string& wk) {
+int getDayIndex(const string& wk) {
 	static map<string, int> weekMap = {
 		{"monday", 0}, {"tuesday", 1}, {"wednesday", 2},
 		{"thursday", 3}, {"friday", 4}, {"saturday", 5}, {"sunday", 6}
@@ -29,12 +30,12 @@ int getWeekIndex(const string& wk) {
 	return weekMap[wk];
 }
 
-int getWeekendIndex(int weekIdx) {
+int getGroupIndex(int weekIdx) {
 	return (weekIdx <= 4) ? 0 : 1;
 }
 
 // 레벤슈타인 거리 계산 알고리즘 (문자열 유사도 검사)
-int levenshtein(const std::string& a, const std::string& b) {
+int calcLevenshtein(const std::string& a, const std::string& b) {
 	const size_t len_a = a.size();
 	const size_t len_b = b.size();
 
@@ -58,7 +59,7 @@ int levenshtein(const std::string& a, const std::string& b) {
 bool isSimilar(const std::string& a, const std::string& b) {
 	if (a.empty() && b.empty()) return true;
 	if (a.empty() || b.empty()) return false;
-	int dist = levenshtein(a, b);
+	int dist = calcLevenshtein(a, b);
 	// 유사도 비율 (1.0: 완전히 같음, 0.0: 전혀 다름)
 	double similarity = 1.0 - static_cast<double>(dist) / std::max(a.length(), b.length());
 	int score = 1 + static_cast<int>(similarity * 99);
@@ -87,7 +88,7 @@ void updateOrInsert(vector<Keyword>& vec, const string& word, int point) {
 	}
 	std::sort(vec.begin(), vec.end());
 }
-bool checkRestore(int pointUZ, int pointDay, int pointGroup) {
+bool checkResetScores(int pointUZ, int pointDay, int pointGroup) {
 	if (pointUZ >= 2100000000)
 		return true;
 	else if (pointDay >= 2100000000)
@@ -100,8 +101,8 @@ bool checkRestore(int pointUZ, int pointDay, int pointGroup) {
 }
 string processInput(const string& w, const string& wk) {
 	UZ++;
-	int weekIdx = getWeekIndex(wk);
-	int weekendIdx = getWeekendIndex(weekIdx);
+	int weekIdx = getDayIndex(wk);
+	int weekendIdx = getGroupIndex(weekIdx);
 	int point = UZ;
 	int pointDay = 0;
 	int pointGroup = 0;
@@ -124,7 +125,7 @@ string processInput(const string& w, const string& wk) {
 		}
 	}
 
-	if (checkRestore(UZ, pointDay, pointGroup)) resetScores();
+	if (checkResetScores(UZ, pointDay, pointGroup)) resetScores();
 	if (found) return w;
 
 	for (const Keyword& node : topPerDay[weekIdx]) {
