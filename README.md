@@ -13,4 +13,7 @@ D5 - 리팩토링이 끝난 코드에, 코드 커버리지가 100% 되어야 한
 | D2 | O  |
 | D3 | O  |
 | D4 | O  |
-| D5 | X  |
+| D5 | O  |
+
+![image](https://github.com/user-attachments/assets/5f35bd5e-8c00-4eda-bd6b-bbcb13114542)
+

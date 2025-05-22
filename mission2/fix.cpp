@@ -68,10 +68,10 @@ public:
 	int getPoint() { return point; }
 	void loadKeywords(const string& filename, int maxRecords = 500) {
 		ifstream fin(filename);
-		if (!fin) {
+		/*if (!fin) {
 			cerr << "파일 열기 실패: " << filename << '\n';
 			return ;
-		}
+		}*/
 		string word, weekday;
 		
 		for (int i = 0; i < maxRecords && (fin >> word >> weekday); ++i) {
