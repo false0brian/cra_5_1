@@ -87,6 +87,7 @@ void updateOrInsert(vector<Keyword>& vec, const string& word, int point) {
 		vec.push_back({ word, point });
 	}
 	std::sort(vec.begin(), vec.end());
+	std::reverse(vec.begin(), vec.end());
 }
 bool checkResetScores(int pointUZ, int pointDay, int pointGroup) {
 	if (pointUZ >= 2100000000)
